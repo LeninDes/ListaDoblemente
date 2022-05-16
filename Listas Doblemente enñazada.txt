@@ -1,0 +1,191 @@
+#include <iostream>
+using namespace std;
+
+class Nodo {
+    //Atributos
+    public: 
+	    int dato; //char, float, string, objeto
+	    Nodo* start;//puntero..
+	    Nodo* end;//puntero..
+	
+	public: 
+		
+		Nodo(){
+			
+		}
+	
+	    void imprimir()
+    	{
+        cout << "/-------------------\\" << endl;
+        cout << "|Dato: " << dato << endl;
+        cout << "|-------------------" << endl;
+        cout << "|Enlace 1: " << start << endl;
+        cout << "|-------------------" << endl;
+        cout << "|Enlace 2: " << end << endl;
+        cout << "\\------------------/" << endl;
+    	}
+};
+
+class ListaDoble {
+    Nodo* inicio;
+    Nodo* final;
+    
+	public:
+	    ListaDoble()
+	    {
+	        this->inicio = NULL;
+	        this->final = NULL;
+	    }
+	    
+	    bool EstaVacia()
+	    {
+	        if (inicio == NULL)
+	            return true;
+	        else
+	            return false;
+	    }
+	    
+	    void Vaciar()
+    	{
+        	inicio = NULL;
+        	final = NULL;
+    	}
+	    
+	    void agregar(int valor){
+	    	Nodo* nuevo = new Nodo();
+	    	nuevo->dato = valor;
+	    	if(EstaVacia()){
+	    		inicio = nuevo;
+	    		final = nuevo;
+	    		nuevo->start = NULL;
+	    		nuevo->end = NULL;
+			} else {
+				nuevo->start=final;
+				final->end = nuevo;
+				final = final->end;
+				final->end = NULL;
+			}
+		}
+		
+		void Imprimir(){
+			Nodo* recorrido = inicio;
+			cout << "Lista enlazada****************************" << endl;
+			while( recorrido != NULL ){
+				recorrido->imprimir();
+				recorrido=recorrido->end;
+			}
+			cout << "****************************" << endl << endl;
+		}
+		void ImprimirReverso(){
+			Nodo* recorrido = final;
+			cout << "Lista enlazada****************************" << endl;
+			while( recorrido != NULL ){
+				recorrido->imprimir();
+				recorrido=recorrido->start;
+			}
+			cout << "****************************" << endl << endl;	
+		}
+    
+    	void EliminarElementoPorElemento(int posicion){
+    		if(EstaVacia())
+			{
+            	cout << "No hay elemento a eliminar" << endl;
+        	} 
+			else if(inicio->dato == posicion)
+			{
+        		Nodo* borrarInicio = inicio;
+        		inicio = inicio->end;
+        		inicio->start = NULL;
+			} 
+			else if(final->dato==posicion){
+				Nodo* borrarFin = final;
+				final = final->start;
+				final->end = NULL;	
+			} 
+			else {
+				Nodo* recorrido = inicio->end;
+				Nodo* anterior;
+				Nodo* siguiente;
+				Nodo* borrar;
+				
+				while(recorrido->end != NULL){
+					if(recorrido->dato == posicion){
+						anterior = recorrido->start;
+						siguiente = recorrido->end;
+						borrar = recorrido;
+						anterior->end;
+						siguiente->start;
+						break;
+					}
+					recorrido=recorrido->end;
+				}
+			}
+		}
+		
+		void MostrarMenu()
+		{
+		    cout << "1.- Ver el contenido de la lista doblemente enlazada" << endl;
+		    cout << "2.- Ver el contenido de la lista doblemente enlazada (Invetido)" << endl;
+			cout << "3.- Insertar un elemento" << endl;
+		    cout << "4.- Eliminar un elemento" << endl;
+		    cout << "5.- Vaciar la lista" << endl;
+		    cout << "0.- Salir" << endl;
+		}
+		
+    
+};
+    
+    
+    
+    
+    
+int main()
+{
+	ListaDoble edades;
+    edades.agregar(12);
+    edades.agregar(15);
+    edades.agregar(11);
+    edades.agregar(10);
+    edades.agregar(22);
+    edades.agregar(20);
+    
+    int elemento;
+    int opcion;
+    do{
+    	edades.MostrarMenu();
+        cin >> opcion;
+        switch (opcion)
+        {
+	        case 0:
+	            cout << "Ingeniería de Sistemas, hasta luego." << endl;
+	            break;
+	        case 1:
+	            edades.Imprimir();
+	            break;
+	            
+	        case 2:
+	           	edades.ImprimirReverso();
+	            break;
+	            
+	        case 3:
+	            cout << "Digite el elemento a insertar: " << endl;
+	            cin >> elemento;
+	            edades.agregar(elemento);
+	            break;
+	
+	        case 4:
+	            edades.EliminarElementoPorElemento(elemento);
+	            break;
+	            
+	        case 5:
+	            edades.Vaciar();
+	            break;
+	
+	        default:
+	            cout << "Opción no valida." << endl;
+	            break;
+    	}
+    	
+	}while(opcion != 0);
+    
+}
